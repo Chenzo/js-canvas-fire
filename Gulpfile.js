@@ -16,21 +16,35 @@ Update CacheBuster:
 var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	concat = require('gulp-concat'),
-	uglify = require('gulp-uglify'),
+	//uglify = require('gulp-uglify'),
 	rename = require('gulp-rename'),
     sourcemaps = require('gulp-sourcemaps'),
     pump = require('pump'),
-	wait = require('gulp-wait'),
+	//wait = require('gulp-wait'),
     replace = require('gulp-replace');
 
 var browserSync = require('browser-sync').create();
 
+var webpack = require('webpack'),
+    webpackStream = require('webpack-stream'),
+    webpackConfig = require('./src/webpack/webpack.config.js'),
+    webpackConfigUgly = require('./src/webpack/webpack.config.uglify.js');
+var named = require('vinyl-named');
 
+
+//For Options
+var minimist = require('minimist'),
+    gulpif = require('gulp-if');
+var knownOptions = {
+    string: 'env',
+    default: { env: process.env.NODE_ENV || 'production' }
+};
+var options = minimist(process.argv.slice(2), knownOptions);
 
 //Task - compiles SCSS files into a single compressed CSS file with a sourcemap
 gulp.task('styles', function() {
     gulp.src('./src/scss/**/*.scss')
-		.pipe(wait(300))
+		//.pipe(wait(300))
         .pipe(sourcemaps.init())
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(sourcemaps.write('/maps'))
@@ -51,18 +65,12 @@ gulp.task('updateCacheBuster', function(){
 
 
 
-//Task - merges all JS files in /src/js into a single file and then minifies it and places it
-//		 in /www/js along wit ha sourcemap
 gulp.task('javascripting', function() {
-	gulp.src('./src/js/**/*.js')
-	.pipe(sourcemaps.init())
-	.pipe(concat('scripts.js'))
-	.pipe(gulp.dest('./www/js'))
-	.pipe(uglify())
-  	.pipe(rename('scripts.min.js'))
-	.pipe(sourcemaps.write('/maps'))
-	.pipe(gulp.dest('./www/js/'));
-});
+    gulp.src('./src/js/*.js')
+      .pipe(named()) //swaps in individual files
+      .pipe(webpackStream(gulpif(options.env === 'production', webpackConfigUgly, webpackConfig)), webpack).on('error', console.error.bind(console))
+      .pipe(gulp.dest('./www/js/'));
+  });
 
 
 
@@ -84,17 +92,23 @@ Default Watch Task
 runs the sass and javascript commands on change in the SRC folder
 
 */
-gulp.task('default', ['styles', 'javascripting', 'updateCacheBuster'] ,function() {
+gulp.task('defaultasdasdsad', ['styles', 'javascripting', 'updateCacheBuster'] ,function() {
 	browserSync.init({
 	    proxy: 'http://localhost:8088'
 	});
-	gulp.watch('./src/js/**/*.js',['js', 'updateCacheBuster']);
+	//gulp.watch('./src/js/**/*.js',['js', 'updateCacheBuster']);
+	gulp.watch('./src/js/*.js',['javascripting']);
     gulp.watch('./src/scss/**/*.scss',['styles', 'updateCacheBuster']);
-    gulp.watch("./www/*.php").on('change', browserSync.reload);
-    gulp.watch("./www/*.html").on('change', browserSync.reload);
-    gulp.watch("./www/**/*.php").on('change', browserSync.reload);
-    gulp.watch("./www/**/*.html").on('change', browserSync.reload);
     gulp.watch("./www/js/**/*.js").on('change', browserSync.reload);
 });
 
 
+gulp.task('default', ['javascripting'] ,function() {
+	browserSync.init({
+        proxy: 'http://localhost:8088',
+        files: ['./www/css/**/*.css']
+    });
+    //gulp.watch('./src/scss/**/*.scss',['stylesRuby']);
+    gulp.watch('./src/js/**/*.js',['javascripting']);
+    gulp.watch("./src/js/**/*.js").on('change', browserSync.reload);
+});

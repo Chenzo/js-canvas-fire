@@ -11,8 +11,8 @@ $param4 = isset($_GET['param4']) ? $_GET['param4'] : "";
 //buildToggle gets replaced via gulp prepbuild/prepdev commands - can be manually adjusted if required.
 $buildToggle = FALSE;
 
-//cacheBusterNumber Updates automatically via the gulp prepbuild command - dont touch. It should look like this: $cacheBusterNumber="1555950973100";
-$cacheBusterNumber="1555950973100";
+//cacheBusterNumber Updates automatically via the gulp prepbuild command - dont touch. It should look like this: $cacheBusterNumber="1555954547801";
+$cacheBusterNumber="1555954547801";
 
 //Base64 blank image src:
 $blankImageSRC = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
