@@ -3,11 +3,20 @@ import {fcolor} from './modules/firecolor.js';
 
 window.fireOBJ = {};
 
+var tColor = [];
+var fireHeight = 2;
+for (var v=0; v<fcolor.length; v++) {
+    for (var h=0; h<fireHeight; h++) {
+        tColor.push(fcolor[v]);
+    }
+}  
+
 $(function(){
 
 var FIRE_WIDTH =  1500;
 var FIRE_HEIGHT = 500;
 var firePixels=[];
+var fireBlur = false;
 
 var canvas = document.getElementById("myCanvas");
 var canvasWidth = canvas.width;
@@ -39,8 +48,11 @@ function drawPixel (x, y, r, g, b, a) {
 // drawPixel(1, 1, 255, 0, 0, 255);
 
 function updateCanvas() {
-    ctx.filter = 'blur(20px)';
     ctx.putImageData(canvasData, 0, 0);
+    if (fireBlur) {
+        //this looks better than teh CSS version, but is way more processor intensive
+        //stackBlurCanvasRGBA("myCanvas", 0, 0, canvasWidth, canvasHeight, 2);
+    }
 }
 
 
@@ -70,8 +82,8 @@ function stopFire() {
                     firePixels[tt] = pixel - (randIdx & 1);
                 }
             } else {
-                if(pixel == 31) {
-                    firePixels[tt] = 31;
+                if(pixel == tColor.length - 1) {
+                    firePixels[tt] = tColor.length - 1;
                 } else {
                     var randIdx = Math.round(Math.random() * 3.0) & 3;
                     firePixels[tt] = pixel + (randIdx & 1);
@@ -105,9 +117,6 @@ var doFire = function() {
 
 }
 
-//doFire();
-
-
 function drawCan() {
     var fC;
     var y;
@@ -115,7 +124,7 @@ function drawCan() {
     for(y=0; y < FIRE_HEIGHT; y++) {
         for (x = 0; x < FIRE_WIDTH; x++) {
             var idx = firePixels[y * FIRE_WIDTH + x];
-            fC = fcolor[idx];
+            fC = tColor[idx];
             drawPixel(x, y, fC[0], fC[1], fC[2], fC[3]);
         }
     }
@@ -124,7 +133,7 @@ function drawCan() {
     updateCanvas();
 
     var ticking = false;
-    setTimeout(checkForInView, 10);
+    checkForInView();
 
     function checkForInView() {
         requestTick();
@@ -145,7 +154,7 @@ function drawCan() {
         drawCan();
 
         updateCanvas();
-
+        
     }
     
     
@@ -172,15 +181,15 @@ function drawCan() {
         var hB = $("#haveBlur:checked").length;
         if (hB > 0) {
             $("#myCanvas").addClass("blurred");
+            fireBlur = true;
         } else {
             $("#myCanvas").removeClass("blurred");
+            fireBlur = false;
         }
         
     })
 
     $('.js-toggle-fire').click(function() {
-        //if //var stoppingFire = true;
-        console.log("beep");
         if ($(this).hasClass("onFire")) {
             stoppingFire = true;
             $(this).removeClass("onFire");
