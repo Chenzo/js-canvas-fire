@@ -6,8 +6,7 @@ window.fireOBJ = {};
 $(function(){
 
 var FIRE_WIDTH =  1500;
-var FIRE_HEIGHT = 149;
-
+var FIRE_HEIGHT = 500;
 var firePixels=[];
 
 var canvas = document.getElementById("myCanvas");
@@ -24,11 +23,10 @@ function rescaleCanvas() {
     //canvasHeight = canvas.height;
     FIRE_WIDTH =  canvasWidth;
     canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-  }
-
+}
 rescaleCanvas();
 
-// That's how you define the value of a pixel //
+
 function drawPixel (x, y, r, g, b, a) {
     var index = (x + y * canvasWidth) * 4;
 
@@ -38,39 +36,20 @@ function drawPixel (x, y, r, g, b, a) {
     canvasData.data[index + 3] = a;
 }
 
+// drawPixel(1, 1, 255, 0, 0, 255);
 
-// That's how you update the canvas, so that your //
-// modification are taken in consideration //
 function updateCanvas() {
+    ctx.filter = 'blur(20px)';
     ctx.putImageData(canvasData, 0, 0);
 }
 
 
-/* drawPixel(1, 1, 255, 0, 0, 255);
-drawPixel(2, 1, 255, 0, 0, 255);
-drawPixel(3, 1, 255, 0, 0, 255);
-
-
-
-for (var t=1; t <=500; t++) {
-	drawPixel(t, 149, 255, 255, 255, 255);
-
-}
-
-for (var u=149; u>0; u--) {
-    var rand = Math.round(Math.random() * 3.0) & 3;
-    console.log(rand);
-    drawPixel(3, u, 255, 255, 255, 255);
-}
-updateCanvas(); */
-
 function setUp() {
-// Set whole screen to 0 (color: 0x07,0x07,0x07)
     for(var i = 0; i < FIRE_WIDTH*FIRE_HEIGHT; i++) {
         firePixels[i] = 0;
     }
 
-    // Set bottom line to 37 (color white: 0xFF,0xFF,0xFF)
+    // Set bottom line to white...
     /* for(var i = 0; i < FIRE_WIDTH; i++) {
         firePixels[(FIRE_HEIGHT-1)*FIRE_WIDTH + i] = 31;
     } */
@@ -123,6 +102,7 @@ var doFire = function() {
             spreadFire(y * FIRE_WIDTH + x);
         }
     }
+
 }
 
 //doFire();
@@ -136,20 +116,10 @@ function drawCan() {
         for (x = 0; x < FIRE_WIDTH; x++) {
             var idx = firePixels[y * FIRE_WIDTH + x];
             fC = fcolor[idx];
-            //console.log(fC);
             drawPixel(x, y, fC[0], fC[1], fC[2], fC[3]);
         }
     }
 }
-//drawCan();
-/* console.log(firePixels[74000]);
-
-var fC = fcolor[firePixels[74000]];
-console.log(fC); */
-    //var rand = Math.round(Math.random() * 3.0) & 3;
-    //console.log(rand);
-
-    //drawPixel(3, u, 255, 255, 255, 255);
 
     updateCanvas();
 
@@ -173,7 +143,9 @@ console.log(fC); */
         stopFire();
         doFire();
         drawCan();
+
         updateCanvas();
+
     }
     
     
@@ -195,6 +167,16 @@ console.log(fC); */
         stoppingFire = true;
     }
 
+    $('.js-toggle-blur').click(function() {
+        
+        var hB = $("#haveBlur:checked").length;
+        if (hB > 0) {
+            $("#myCanvas").addClass("blurred");
+        } else {
+            $("#myCanvas").removeClass("blurred");
+        }
+        
+    })
 
     $('.js-toggle-fire').click(function() {
         //if //var stoppingFire = true;

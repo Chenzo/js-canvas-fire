@@ -16,10 +16,17 @@ include "includes/globals.php";
     <body class="home_fire">
         <!-- <h1>JS CANVAS FIRE</h1> -->
 
-        <button class="js-toggle-fire">Toggle Fire</button>
+        <div class="overCanvas">
+            <button class="js-toggle-fire">Toggle Fire</button>
+
+            <div class="checkbox js-toggle-blur">
+                <input type="checkbox" id="haveBlur">
+                <label for="haveBlur">Apply Blur</label>
+            </div>
+        </div>
 
         <div class="canvasholder">
-            <canvas id="myCanvas" width="1500" height="150"></canvas>
+            <canvas id="myCanvas" width="1500" height="500"></canvas>
         </div>
 
     <?php include "includes/foot_include.php"; ?>
