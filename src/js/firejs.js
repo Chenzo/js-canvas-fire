@@ -16,6 +16,17 @@ var canvasHeight = canvas.height;
 var ctx = canvas.getContext("2d");
 var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
+    
+function rescaleCanvas() {
+    ctx.canvas.width  = window.innerWidth;
+    //ctx.canvas.height = window.innerHeight;
+    canvasWidth = canvas.width;
+    //canvasHeight = canvas.height;
+    FIRE_WIDTH =  canvasWidth;
+    canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+  }
+
+rescaleCanvas();
 
 // That's how you define the value of a pixel //
 function drawPixel (x, y, r, g, b, a) {
@@ -60,17 +71,35 @@ function setUp() {
     }
 
     // Set bottom line to 37 (color white: 0xFF,0xFF,0xFF)
-    for(var i = 0; i < FIRE_WIDTH; i++) {
+    /* for(var i = 0; i < FIRE_WIDTH; i++) {
         firePixels[(FIRE_HEIGHT-1)*FIRE_WIDTH + i] = 31;
-    }
+    } */
 }
 setUp();
 
-
+var stoppingFire = true;
 function stopFire() {
-    for(var i = 0; i < FIRE_WIDTH; i++) {
-        firePixels[(FIRE_HEIGHT-1)*FIRE_WIDTH + i] = 0;
-    }
+    
+        for(var i = 0; i < FIRE_WIDTH; i++) {
+            var tt = (FIRE_HEIGHT-1)*FIRE_WIDTH + i;
+            var pixel = firePixels[tt];
+            if (stoppingFire) {
+                if(pixel == 0) {
+                    firePixels[tt] = 0;
+                } else {
+                    var randIdx = Math.round(Math.random() * 3.0) & 3;
+                    firePixels[tt] = pixel - (randIdx & 1);
+                }
+            } else {
+                if(pixel == 31) {
+                    firePixels[tt] = 31;
+                } else {
+                    var randIdx = Math.round(Math.random() * 3.0) & 3;
+                    firePixels[tt] = pixel + (randIdx & 1);
+                }
+            }
+        }
+    
 }
 
 
@@ -82,13 +111,12 @@ function spreadFire(src) {
 
         var randIdx = Math.round(Math.random() * 3.0) & 3;
         var dst = src - randIdx + 1;
+        dst = src - randIdx + 1;
         firePixels[dst - FIRE_WIDTH ] = pixel - (randIdx & 1);
     }
 }
 
 
-
-var fC;
 var doFire = function() {
     for(var x=0 ; x < FIRE_WIDTH; x++) {
         for (var y = 1; y < FIRE_HEIGHT; y++) {
@@ -97,7 +125,7 @@ var doFire = function() {
     }
 }
 
-doFire();
+//doFire();
 
 
 function drawCan() {
@@ -113,7 +141,7 @@ function drawCan() {
         }
     }
 }
-drawCan();
+//drawCan();
 /* console.log(firePixels[74000]);
 
 var fC = fcolor[firePixels[74000]];
@@ -123,24 +151,7 @@ console.log(fC); */
 
     //drawPixel(3, u, 255, 255, 255, 255);
 
-updateCanvas();
-
-//var theColor = ctx.getImageData(2, 149, 1, 1).data; 
-//console.log(theColor);
-
-    var onFire = false;
-    var fireLoop = function() {
-        doFire();
-        drawCan();
-        updateCanvas();
-        if (onFire) {
-            setTimeout(fireLoop, 100);
-        }
-    }
-
-    onFire = true;
-    //fireLoop();    
-
+    updateCanvas();
 
     var ticking = false;
     setTimeout(checkForInView, 10);
@@ -159,11 +170,11 @@ updateCanvas();
     
     function update() {
         ticking = false;
+        stopFire();
         doFire();
         drawCan();
         updateCanvas();
     }
-    
     
     
     
@@ -176,13 +187,28 @@ updateCanvas();
 
 
     window.fireOBJ.startFire = function() {
-        setUp();
+        stoppingFire = false;
     }
 
 
     window.fireOBJ.stopFire = function() {
-        stopFire();
+        stoppingFire = true;
     }
+
+
+    $('.js-toggle-fire').click(function() {
+        //if //var stoppingFire = true;
+        console.log("beep");
+        if ($(this).hasClass("onFire")) {
+            stoppingFire = true;
+            $(this).removeClass("onFire");
+        } else {
+            stoppingFire = false;
+            $(this).addClass("onFire");
+        }
+    }) 
+        
+
 });
 
 

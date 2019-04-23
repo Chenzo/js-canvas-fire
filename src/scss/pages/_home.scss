@@ -4,6 +4,30 @@
 			margin: 0 auto;
 			display: block;
 			text-align: center;
+
+			position: fixed;
+			bottom: -5px;
 		}
 
+		button {
+			margin: 20px auto;
+		}
+
+}
+
+
+button {
+	display: block;
+    padding: 16px;
+	font-size: .7em;
+	border-radius: 11px;
+	text-align: center;
+	color: #fff;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: initial;
+    text-transform: uppercase;
+    text-align: center;
+    border: thin solid rgba(77, 22, 11, 255); 
+    background-color:rgba(209, 84, 12, 255);
 }
