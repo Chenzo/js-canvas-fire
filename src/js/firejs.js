@@ -1,9 +1,11 @@
 
 import {fcolor} from './modules/firecolor.js';
 
+window.fireOBJ = {};
+
 $(function(){
 
-var FIRE_WIDTH =  500;
+var FIRE_WIDTH =  1500;
 var FIRE_HEIGHT = 149;
 
 var firePixels=[];
@@ -62,8 +64,15 @@ function setUp() {
         firePixels[(FIRE_HEIGHT-1)*FIRE_WIDTH + i] = 31;
     }
 }
-
 setUp();
+
+
+function stopFire() {
+    for(var i = 0; i < FIRE_WIDTH; i++) {
+        firePixels[(FIRE_HEIGHT-1)*FIRE_WIDTH + i] = 0;
+    }
+}
+
 
 function spreadFire(src) {
     var pixel = firePixels[src];
@@ -76,6 +85,8 @@ function spreadFire(src) {
         firePixels[dst - FIRE_WIDTH ] = pixel - (randIdx & 1);
     }
 }
+
+
 
 var fC;
 var doFire = function() {
@@ -117,18 +128,61 @@ updateCanvas();
 //var theColor = ctx.getImageData(2, 149, 1, 1).data; 
 //console.log(theColor);
 
+    var onFire = false;
+    var fireLoop = function() {
+        doFire();
+        drawCan();
+        updateCanvas();
+        if (onFire) {
+            setTimeout(fireLoop, 100);
+        }
+    }
 
-var fireLoop = function() {
-    doFire();
-    drawCan();
-    updateCanvas();
-    setTimeout(fireLoop, 100);
-}
+    onFire = true;
+    //fireLoop();    
 
-    fireLoop();    
+
+    var ticking = false;
+    setTimeout(checkForInView, 10);
+
+    function checkForInView() {
+        requestTick();
+        setTimeout(checkForInView, 10);
+    }
+    
+    function requestTick() {
+        if(!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+    
+    function update() {
+        ticking = false;
+        doFire();
+        drawCan();
+        updateCanvas();
+    }
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+    window.fireOBJ.startFire = function() {
+        setUp();
+    }
+
+
+    window.fireOBJ.stopFire = function() {
+        stopFire();
+    }
 });
-
-
-
 
 

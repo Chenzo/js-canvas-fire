@@ -103,12 +103,13 @@ gulp.task('defaultasdasdsad', ['styles', 'javascripting', 'updateCacheBuster'] ,
 });
 
 
-gulp.task('default', ['javascripting'] ,function() {
+gulp.task('default', ['styles', 'javascripting'] ,function() {
 	browserSync.init({
         proxy: 'http://localhost:8088',
         files: ['./www/css/**/*.css']
     });
     //gulp.watch('./src/scss/**/*.scss',['stylesRuby']);
     gulp.watch('./src/js/**/*.js',['javascripting']);
+    gulp.watch('./src/scss/**/*.scss',['styles', 'updateCacheBuster']);
     gulp.watch("./src/js/**/*.js").on('change', browserSync.reload);
 });

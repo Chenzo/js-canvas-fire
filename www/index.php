@@ -19,7 +19,7 @@ include "includes/globals.php";
 
         <div class="canvasholder">
 
-            <canvas id="myCanvas" width="500" height="150"></canvas>
+            <canvas id="myCanvas" width="1500" height="150"></canvas>
 
         </div>
 
