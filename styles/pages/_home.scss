@@ -1,0 +1,53 @@
+.home_fire {
+
+		.overCanvas {
+			z-index: 4;
+			position: relative;
+			text-align: center;
+		}
+
+		.canvasholder {
+			margin: 0 auto;
+			display: block;
+			text-align: center;
+
+			position: fixed;
+			bottom: -5px;
+
+			canvas {
+				&.blurred {
+					filter:  blur(1px);
+				}
+			}
+		}
+
+		button {
+			margin: 20px auto;
+
+			&.onFire {
+				border: 2px solid rgba(174, 165, 41, 255); 
+			}
+		}
+
+}
+
+label, button {
+	font-weight: 500;
+    letter-spacing: 1px;
+    line-height: initial;
+	text-transform: uppercase;
+	font-size: .7em;
+	color: #fff;
+}
+
+button {
+	display: block;
+    padding: 16px;
+
+	border-radius: 11px;
+	text-align: center;
+	
+    text-align: center;
+    border: 2px solid rgba(77, 22, 11, 255); 
+    background-color:rgba(209, 84, 12, 255);
+}
