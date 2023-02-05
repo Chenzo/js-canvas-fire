@@ -1,31 +1,17 @@
 {
-  "name": "css-stick",
-  "version": "7.0.0",
-  "description": "Sticky CSS example",
-  "main": "index.js",
+  "name": "fire",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "@Chenzo1",
-  "license": "ISC",
-  "devDependencies": {
-    "browser-sync": "^2.23.5",
-    "del": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-if": "^2.0.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.6.1",
-    "gulp-run-command": "^0.0.9",
-    "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5",
-    "pump": "^2.0.0",
-    "uglifyjs-webpack-plugin": "^1.2.5",
-    "vinyl-named": "^1.1.0",
-    "webpack": "^4.12.0",
-    "webpack-stream": "^4.0.3"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "npm": "^6.4.1"
+    "@next/font": "13.1.6",
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }

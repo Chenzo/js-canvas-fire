@@ -1,47 +1,32 @@
-error_log
-error_log/
-node_modules
-node_modules/
-.sass-cache/
-*.log
-maps
-maps/
-.vscode/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-#merge files
-*.orig
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
+# testing
+/coverage
 
-#dreamweaver files#
-_notes
-_notes/
+# next.js
+/.next/
+/out/
 
+# production
+/build
 
-#IntelliJ files#
-.idea
-.idea/
-ROOT.iml
-
-
-# OS generated files #
-######################
+# misc
 .DS_Store
-.DS_Store?
+*.pem
 
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
+# local env files
+.env*.local
 
-# Sublime Files #
-*.sublime-project
-*.sublime-workspace
-
-
-#wordpress:
-wp-content/plugins/*
-wp-admin/
-wp-includes/*
-wp-content/themes/twentyeleven/*
-wp-content/themes/twentyfourteen/*
-wp-content/themes/twentytwelve/*
-wp-content/themes/twentyfifteen/*
-wp-content/themes/twentythirteen/*
-
+# vercel
+.vercel
