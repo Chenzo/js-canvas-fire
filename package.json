@@ -15,6 +15,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "chroma-js": "^2.4.2",
     "sass": "^1.58.0"
   }
 }
